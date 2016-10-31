@@ -11,13 +11,19 @@ class Stress {
 
   startStress() {
     this.cfg.stress = true
-    const { msgsPerLoop, timeout } = this.cfg
-    this.intervalFn = setInterval(() => {
-      for (let i = 0; i < msgsPerLoop; i++) {
-        const msg = this.messages.generateNew()
-        this.io.emit('newMessage', msg)
-      }
-    }, timeout)
+    const { timeout } = this.cfg
+    this.intervalFn = setInterval(
+      this.generateMsgs.bind(this),
+      timeout
+    )
+  }
+
+  generateMsgs() {
+    const { msgsPerLoop } = this.cfg
+    for (let i = 0; i < msgsPerLoop; i++) {
+      const msg = this.messages.generateNew()
+      this.io.emit('newMessage', msg)
+    }
   }
 
   stopStress() {
