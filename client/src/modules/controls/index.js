@@ -29,6 +29,17 @@ function timeout(state=1000, action) {
   }
 }
 
+function msgsPerLoop(state=1, action) {
+  switch(action.type) {
+    case MessagesActions.PARAMS_RECEIVED:
+      return action.params.msgsPerLoop || state
+    case Actions.SET_MSGS_PER_LOOP:
+      return action.msgsPerLoop
+    default:
+      return state
+  }
+}
+
 export default combineReducers({
-  stress, timeout
+  stress, timeout, msgsPerLoop
 })

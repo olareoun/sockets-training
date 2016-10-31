@@ -19,10 +19,17 @@ class App extends Component {
         </div>
         <section className="controls">
           <h1>Controles</h1>
-          <input type="number" value={this.props.timeout} onChange={(ev) => this.props.setTimeout(ev.target.value) }/>
-          <button onClick={ this.props.startStress } disabled={this.props.stress}>Estresar</button>
-          <button onClick={ this.props.stopStress } disabled={!this.props.stress}>Parar</button>
-          <button onClick={ this.props.clearMessages } disabled={this.props.stress}>Borrar</button>
+          <div className="params">
+            <input type="number" value={this.props.timeout} min="1" max="1000"
+              onChange={(ev) => this.props.setTimeout(ev.target.value) }/>
+            <input type="number" value={this.props.msgsPerLoop} min="1" max="1000"
+              onChange={(ev) => this.props.setMsgsPerLoop(ev.target.value) }/>
+          </div>
+          <div className="actions">
+            <button onClick={ this.props.startStress } disabled={this.props.stress}>Estresar</button>
+            <button onClick={ this.props.stopStress } disabled={!this.props.stress}>Parar</button>
+            <button onClick={ this.props.clearMessages } disabled={this.props.stress}>Borrar</button>
+          </div>
         </section>
         <section className="messages">
           <h1>Mensajes</h1>
@@ -44,7 +51,8 @@ const mapDispatchToProps = {
   clearMessages: Messages.clearMessages,
   startStress: Controls.startStress,
   stopStress: Controls.stopStress,
-  setTimeout: Controls.setTimeout
+  setTimeout: Controls.setTimeout,
+  setMsgsPerLoop: Controls.setMsgsPerLoop
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)

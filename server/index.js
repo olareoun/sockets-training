@@ -8,53 +8,65 @@ server.listen(8080, () => {
 })
 
 io.on('connection', (socket) => {
-  console.log('Cliente conectado', { timeout, stress })
-  socket.emit('params', { timeout, stress })
+  console.log('Cliente conectado')
+  socket.emit('params', {
+    timeout: _timeout,
+    stress: _stress,
+    msgsPerLoop: _msgsPerLoop
+  })
   socket.on('clearMessages', () => {
     clearMessages()
     socket.emit('messagesDeleted')
   })
   socket.on('getMessages', (msg) => {
-    socket.emit("messages", messages)
+    socket.emit("messages", _messages)
   })
   socket.on('startStress', () => {
-    console.log('start stress')
     startStress()
   })
   socket.on('stopStress', () => {
-    console.log('stop stress')
     stopStress()
   })
-  socket.on('setTimeout', (newTimeout) => {
-    timeout = newTimeout
-    if (stress) {
-      stopStress()
-      startStress()
-    }
+  socket.on('setTimeout', (timeout) => {
+    _timeout = timeout
+    restartStress()
+  })
+  socket.on('setMsgsPerLoop', (msgsPerLoop) => {
+    _msgsPerLoop = msgsPerLoop
+    restartStress()
   })
 })
 
-let stress = false
-let timeout = 1000
-let messages = []
-let intervalFn
+let _stress = false
+let _timeout = 1000
+let _msgsPerLoop = 1
+let _messages = []
+let _intervalFn
+
 function startStress() {
-  console.log(timeout)
-  stress = true
-  intervalFn = setInterval(() => {
-    const id = messages.length
-    const msg = { name: `cosa ${id}`, id: id }
-    console.log(msg)
-    messages.unshift(msg)
-    io.emit('newMessage', msg)
-  }, timeout)
+  _stress = true
+  _intervalFn = setInterval(() => {
+    for (let i = 0; i < _msgsPerLoop; i++) {
+      const id = _messages.length
+      const msg = { name: `cosa ${id}`, id: id }
+      _messages.unshift(msg)
+      io.emit('newMessage', msg)
+    }
+  }, _timeout)
 }
 
 function stopStress() {
-  clearInterval(intervalFn)
-  stress = false
+  clearInterval(_intervalFn)
+  _stress = false
 }
 
 function clearMessages() {
-  messages = []
+  _messages = []
+}
+
+function restartStress() {
+  if (_stress) {
+    stopStress()
+    startStress()
+  }
 }

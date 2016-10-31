@@ -8,8 +8,6 @@ module.exports = (() => {
     const toDispatch = _msgs.concat([])
     _msgs = []
     if (toDispatch.length) {
-      console.log("#########")
-      console.log(toDispatch)
       _dispatch(Actions.messagesReceived(toDispatch))
     }
   }, 100)
@@ -25,7 +23,6 @@ module.exports = (() => {
   }
 
   function add(msg) {
-    console.log("add", msg.id)
     _msgs.unshift(msg)
   }
 
