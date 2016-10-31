@@ -15,8 +15,7 @@ let stressConfig = {
   msgsPerLoop: 1
 }
 
-let messages = Messages()
-
+const messages = Messages()
 const stress = new Stress(stressConfig, io, messages)
 
 io.on('connection', (socket) => {

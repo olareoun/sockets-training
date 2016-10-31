@@ -4,8 +4,14 @@ module.exports = () => {
   return {
     clear,
     list,
-    store,
-    nextIndex
+    generateNew
+  }
+
+  function generateNew() {
+    const id = nextIndex()
+    const msg = { name: `cosa ${id}`, id: id }
+    store(msg)
+    return msg
   }
 
   function nextIndex() {

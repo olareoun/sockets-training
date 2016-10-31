@@ -14,9 +14,7 @@ class Stress {
     const { msgsPerLoop, timeout } = this.cfg
     this.intervalFn = setInterval(() => {
       for (let i = 0; i < msgsPerLoop; i++) {
-        const id = this.messages.nextIndex()
-        const msg = { name: `cosa ${id}`, id: id }
-        this.messages.store(msg)
+        const msg = this.messages.generateNew()
         this.io.emit('newMessage', msg)
       }
     }, timeout)
