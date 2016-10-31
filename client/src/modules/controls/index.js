@@ -1,13 +1,13 @@
 import { combineReducers } from 'redux'
 
 import * as Actions from './actions'
-import * as MessagesActions from '../messages/actions'
+import * as ConnectionActions from '../connection/actions'
 
 export * from './actions'
 
 function stress(state=false, action) {
   switch(action.type) {
-    case MessagesActions.PARAMS_RECEIVED:
+    case ConnectionActions.PARAMS_RECEIVED:
       return action.params.stress
     case Actions.START_STRESS:
       return true
@@ -20,7 +20,7 @@ function stress(state=false, action) {
 
 function timeout(state=1000, action) {
   switch(action.type) {
-    case MessagesActions.PARAMS_RECEIVED:
+    case ConnectionActions.PARAMS_RECEIVED:
       return action.params.timeout
     case Actions.SET_TIMEOUT:
       return action.timeout
@@ -31,7 +31,7 @@ function timeout(state=1000, action) {
 
 function msgsPerLoop(state=1, action) {
   switch(action.type) {
-    case MessagesActions.PARAMS_RECEIVED:
+    case ConnectionActions.PARAMS_RECEIVED:
       return action.params.msgsPerLoop || state
     case Actions.SET_MSGS_PER_LOOP:
       return action.msgsPerLoop

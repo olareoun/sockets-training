@@ -18,7 +18,7 @@ export function connectSource() {
       Messages.add(msg)
     })
     socket.on('messagesDeleted', () => {
-      Messages.delete()
+      Messages.clear()
     })
   }
 }
