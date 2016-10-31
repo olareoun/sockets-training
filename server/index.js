@@ -16,7 +16,7 @@ let stressConfig = {
 }
 
 const messages = Messages()
-const stress = new Stress(stressConfig, io, messages)
+const stress = Stress(stressConfig, io, messages)
 
 io.on('connection', (socket) => {
   console.log('Cliente conectado')

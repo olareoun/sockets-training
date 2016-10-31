@@ -1,53 +1,57 @@
-class Stress {
-  constructor(cfg, io, messages) {
-    this.cfg = cfg
-    this.io = io
-    this.messages = messages
+module.exports = (cfg, io, messages) => {
+  let _cfg = Object.assign({}, cfg)
+  let intervalFn
+
+  return {
+    getParams,
+    startStress,
+    stopStress,
+    setTimeout,
+    setMsgsPerLoop
   }
 
-  getParams() {
-    return this.cfg
+  function getParams() {
+    return _cfg
   }
 
-  startStress() {
-    this.cfg.stress = true
-    const { timeout } = this.cfg
-    this.intervalFn = setInterval(
-      this.generateMsgs.bind(this),
+  function startStress() {
+    _cfg.stress = true
+    const { timeout } = _cfg
+    _intervalFn = setInterval(
+      generateMsgs.bind(this),
       timeout
     )
   }
 
-  generateMsgs() {
-    const { msgsPerLoop } = this.cfg
+  function generateMsgs() {
+    const { msgsPerLoop } = _cfg
     for (let i = 0; i < msgsPerLoop; i++) {
-      const msg = this.messages.generateNew()
-      this.io.emit('newMessage', msg)
+      const msg = messages.generateNew()
+      io.emit('newMessage', msg)
     }
   }
 
-  stopStress() {
-    clearInterval(this.intervalFn)
-    this.cfg.stress = false
+  function stopStress() {
+    clearInterval(_intervalFn)
+    _cfg.stress = false
   }
 
-  restartStress() {
-    if (this.cfg.stress) {
-      this.stopStress()
-      this.startStress()
+  function restartStress() {
+    if (_cfg.stress) {
+      stopStress()
+      startStress()
     }
   }
 
-  setTimeout(timeout) {
-    this.cfg.timeout = timeout
-    this.restartStress()
+  function setTimeout(timeout) {
+    _cfg.timeout = timeout
+    restartStress()
   }
 
-  setMsgsPerLoop(msgsPerLoop) {
-    this.cfg.msgsPerLoop = msgsPerLoop
-    this.restartStress()
+  function setMsgsPerLoop(msgsPerLoop) {
+    _cfg.msgsPerLoop = msgsPerLoop
+    restartStress()
   }
 
 }
 
-module.exports = Stress
