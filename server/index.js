@@ -9,11 +9,7 @@ server.listen(8080, () => {
 
 io.on('connection', (socket) => {
   console.log('Cliente conectado')
-  socket.emit('params', {
-    timeout: _timeout,
-    stress: _stress,
-    msgsPerLoop: _msgsPerLoop
-  })
+  socket.emit('params', stressConfig)
   socket.on('clearMessages', () => {
     clearMessages()
     socket.emit('messagesDeleted')
@@ -28,36 +24,40 @@ io.on('connection', (socket) => {
     stopStress()
   })
   socket.on('setTimeout', (timeout) => {
-    _timeout = timeout
+    stressConfig.timeout = timeout
     restartStress()
   })
   socket.on('setMsgsPerLoop', (msgsPerLoop) => {
-    _msgsPerLoop = msgsPerLoop
+    stressConfig.msgsPerLoop = msgsPerLoop
     restartStress()
   })
 })
 
-let _stress = false
-let _timeout = 1000
-let _msgsPerLoop = 1
+let stressConfig = {
+  stress: false,
+  timeout: 1000,
+  msgsPerLoop: 1
+}
+
 let _messages = []
 let _intervalFn
 
 function startStress() {
-  _stress = true
+  stressConfig.stress = true
+  const { msgsPerLoop, timeout } = stressConfig
   _intervalFn = setInterval(() => {
-    for (let i = 0; i < _msgsPerLoop; i++) {
+    for (let i = 0; i < msgsPerLoop; i++) {
       const id = _messages.length
       const msg = { name: `cosa ${id}`, id: id }
       _messages.unshift(msg)
       io.emit('newMessage', msg)
     }
-  }, _timeout)
+  }, timeout)
 }
 
 function stopStress() {
   clearInterval(_intervalFn)
-  _stress = false
+  stressConfig.stress = false
 }
 
 function clearMessages() {
@@ -65,7 +65,7 @@ function clearMessages() {
 }
 
 function restartStress() {
-  if (_stress) {
+  if (stressConfig.stress) {
     stopStress()
     startStress()
   }
