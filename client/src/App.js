@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import logo from './logo.svg'
 import './App.css'
 import { connect } from 'react-redux'
+import * as Connection from './modules/connection'
 import * as Messages from './modules/messages'
 import * as Controls from './modules/controls'
 
@@ -35,6 +36,7 @@ class App extends Component {
           <h1>Mensajes</h1>
           { this.props.fetching? <p>Cargando...</p> : null }
           { this.props.messages.visible.map((msg) => <p key={msg.id}>{msg.name}</p>) }
+          <button onClick={ this.props.loadMore } disabled={ this.props.stress } >Ver mas</button>
         </section>
       </div>
     )
@@ -46,9 +48,10 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = {
-  connectSource: Messages.connectSource,
+  connectSource: Connection.connectSource,
   getMessages: Messages.getMessages,
   clearMessages: Messages.clearMessages,
+  loadMore: Messages.loadMore,
   startStress: Controls.startStress,
   stopStress: Controls.stopStress,
   setTimeout: Controls.setTimeout,

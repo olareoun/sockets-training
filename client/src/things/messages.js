@@ -15,7 +15,12 @@ module.exports = (() => {
   return {
     setDispatcher,
     addMany,
-    add
+    add,
+    clear
+  }
+
+  function clear() {
+    _dispatch(Actions.messagesDeleted())
   }
 
   function addMany(msgs) {
