@@ -9,7 +9,7 @@ module.exports = () => {
 
   function generateNew() {
     const id = nextIndex()
-    const msg = { name: `cosa ${id}`, id: id }
+    const msg = { id, name: id }
     store(msg)
     return msg
   }
