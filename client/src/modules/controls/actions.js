@@ -5,10 +5,10 @@ export const STOP_STRESS = 'STOP_STRESS'
 export const SET_TIMEOUT = 'SET_TIMEOUT'
 export const SET_MSGS_PER_LOOP = 'SET_MSGS_PER_LOOP'
 
-export function setTimeout(timeout) {
+export function setInterval(timeout) {
   return (dispatch, state) => {
     dispatch({ type: SET_TIMEOUT, timeout })
-    socket.emit('setTimeout', timeout)
+    socket.emit('setInterval', timeout)
   }
 }
 

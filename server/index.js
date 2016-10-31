@@ -34,8 +34,8 @@ io.on('connection', (socket) => {
   socket.on('stopStress', () => {
     stress.stopStress()
   })
-  socket.on('setTimeout', (timeout) => {
-    stress.setTimeout(timeout)
+  socket.on('setInterval', (timeout) => {
+    stress.setInterval(timeout)
   })
   socket.on('setMsgsPerLoop', (msgsPerLoop) => {
     stress.setMsgsPerLoop(msgsPerLoop)

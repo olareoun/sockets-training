@@ -6,7 +6,7 @@ module.exports = (cfg, io, messages) => {
     getParams,
     startStress,
     stopStress,
-    setTimeout,
+    setInterval: setIntervalTime,
     setMsgsPerLoop
   }
 
@@ -43,7 +43,7 @@ module.exports = (cfg, io, messages) => {
     }
   }
 
-  function setTimeout(timeout) {
+  function setIntervalTime(timeout) {
     _cfg.timeout = timeout
     restartStress()
   }

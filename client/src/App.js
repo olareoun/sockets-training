@@ -22,7 +22,7 @@ class App extends Component {
           <h1>Controles</h1>
           <div className="params">
             <input type="number" value={this.props.timeout} min="1" max="1000"
-              onChange={(ev) => this.props.setTimeout(ev.target.value) }/>
+              onChange={(ev) => this.props.setInterval(ev.target.value) }/>
             <input type="number" value={this.props.msgsPerLoop} min="1" max="1000"
               onChange={(ev) => this.props.setMsgsPerLoop(ev.target.value) }/>
           </div>
@@ -54,7 +54,7 @@ const mapDispatchToProps = {
   loadMore: Messages.loadMore,
   startStress: Controls.startStress,
   stopStress: Controls.stopStress,
-  setTimeout: Controls.setTimeout,
+  setInterval: Controls.setInterval,
   setMsgsPerLoop: Controls.setMsgsPerLoop
 }
 
